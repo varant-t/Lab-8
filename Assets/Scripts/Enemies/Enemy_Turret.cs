@@ -12,6 +12,8 @@ public class Enemy_Turret : MonoBehaviour
     float timeSinceLastFire = 0.0f;
 
     public int health;
+    public AudioSource enemyAudio;
+    public AudioClip squishSFX;
 
     Animator anim;
 
@@ -19,8 +21,9 @@ public class Enemy_Turret : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
+        enemyAudio = GetComponent<AudioSource>();
 
-        if(!anim)
+        if (!anim)
         {
             Debug.LogWarning("No Animator component found on enemy turret");
         }
@@ -67,6 +70,18 @@ public class Enemy_Turret : MonoBehaviour
         anim.SetBool("Fire", false);
     }
 
+    public void IsSquished()
+    {
+        anim.SetBool("Squish", true);
+        enemyAudio.clip = squishSFX;
+        enemyAudio.Play();
+    }
+
+    public void FinishDeath()
+    {
+        Destroy(gameObject);
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "PlayerProjectile")
@@ -75,7 +90,10 @@ public class Enemy_Turret : MonoBehaviour
 
             if (health <= 0)
             {
+                enemyAudio.clip = squishSFX;
+                enemyAudio.Play();
                 Destroy(gameObject);
+              
             }
         }
        

@@ -14,6 +14,8 @@ public class Enemy_Walker : MonoBehaviour
     
 
     public bool isFacingRight;
+    public AudioSource enemyAudio;
+    public AudioClip squishSFX;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +23,7 @@ public class Enemy_Walker : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        enemyAudio = GetComponent<AudioSource>();
 
         if (!rb)
         {
@@ -67,12 +70,16 @@ public class Enemy_Walker : MonoBehaviour
         if (health <= 0)
         {
             anim.SetBool("Death", true);
+            enemyAudio.clip = squishSFX;
+            enemyAudio.Play();
         }
     }
 
     public void IsSquished()
     {
         anim.SetBool("Squish", true);
+        enemyAudio.clip = squishSFX;
+        enemyAudio.Play();
     }
 
     public void FinishDeath()

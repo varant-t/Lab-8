@@ -17,12 +17,15 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody2D myRigidBody;
 
     private bool isFacingLeft = false;
+    public AudioClip jumpSFX;
+    public AudioSource playerAudio;
 
     // Start is called before the first frame update
     void Start()
     {
         myRigidBody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        playerAudio = GetComponent<AudioSource>();
 
         if (speed <= 0)
         {
@@ -57,6 +60,8 @@ public class PlayerMovement : MonoBehaviour
             myRigidBody.velocity = Vector2.zero;
 
             myRigidBody.AddForce(Vector2.up * JumpForce);
+            playerAudio.clip = jumpSFX;
+            playerAudio.Play();
         }
 
         myRigidBody.velocity = new Vector2(horizontalInput * speed, myRigidBody.velocity.y);

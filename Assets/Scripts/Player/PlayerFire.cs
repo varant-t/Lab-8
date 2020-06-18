@@ -11,12 +11,15 @@ public class PlayerFire : MonoBehaviour
 
     public float projectileSpeed;
     public Projectile projectilePrefab;
-
+   
+    public AudioSource playerAudio;
+    public AudioClip fireSFX;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        playerAudio = GetComponent<AudioSource>();
         if (projectileSpeed <= 0)
         {
             projectileSpeed = 7.0f;
@@ -46,5 +49,7 @@ public class PlayerFire : MonoBehaviour
             Projectile temp = Instantiate(projectilePrefab, spawnPointRight.position, spawnPointRight.rotation);
             temp.speed = projectileSpeed;
         }
+        playerAudio.clip = fireSFX;
+        playerAudio.Play();
     }
 }

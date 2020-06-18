@@ -9,9 +9,12 @@ public class PlayerCollision : MonoBehaviour
     public float bounceForce;
     Transform spawnPoint;
 
+    public AudioSource playerAudio;
+    public AudioClip deathSFX;
     // Start is called before the first frame update
     void Start()
     {
+        playerAudio = GetComponent<AudioSource>();
         myRigidBody = GetComponent<Rigidbody2D>();
         spawnPoint = GameObject.FindGameObjectWithTag("SpawnPoint").GetComponent<Transform>();
 
@@ -29,13 +32,14 @@ public class PlayerCollision : MonoBehaviour
             GameManager.instance.lives -= 1;
             GameManager.instance.SpawnPlayer(spawnPoint);
             Destroy(gameObject);
-        }
+        } 
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "EnemyProjectile")
         {
+
             GameManager.instance.lives -= 1;
             GameManager.instance.SpawnPlayer(spawnPoint);
             Destroy(gameObject);
@@ -47,6 +51,7 @@ public class PlayerCollision : MonoBehaviour
         if (collision.gameObject.tag == "EnemySquish")
         {
             collision.gameObject.GetComponentInParent<Enemy_Walker>().IsSquished();
+            collision.gameObject.GetComponentInParent<Enemy_Turret>().IsSquished();
 
             myRigidBody.velocity = Vector2.zero;
             myRigidBody.AddForce(Vector2.up * bounceForce);
